@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.config.WechatConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,6 +16,13 @@ import java.util.Arrays;
 @RequestMapping(value = "/wechat")
 public class wechatController {
     private String   TOKEN="2019218sun";
+    @RequestMapping(value = "/id")
+    public String config (HttpServletRequest req){
+        WechatConfig wechatConfig;
+        wechatConfig = new WechatConfig();
+        req.setAttribute("id",wechatConfig.getWechatAppId());
+        return  "index";
+    }
     @RequestMapping(value = "/validateToken")
     public void validateToken(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String signature = req.getParameter("signature");
