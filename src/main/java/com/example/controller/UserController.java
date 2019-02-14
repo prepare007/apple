@@ -31,7 +31,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping(value = "/findUser/{id}", method = RequestMethod.GET)
-    public User findOneCity(@PathVariable("id") Long id) {
+    public User findOneUser(@PathVariable("id") Long id) {
         return userService.findUserById(id);
     }
 

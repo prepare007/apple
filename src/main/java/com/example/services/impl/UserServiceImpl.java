@@ -35,4 +35,9 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllUser(int pageNum, int pageSize) {
         return userMapper.selectAllUser();
     }
+
+    @Override
+    public User findUserById(Long id) {
+        return userMapper.findUserById(id);
+    }
 }

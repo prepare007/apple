@@ -13,4 +13,5 @@ public interface UserMapper {
 
 
     List<User> selectAllUser();
+    User findUserById(Long id);
 }

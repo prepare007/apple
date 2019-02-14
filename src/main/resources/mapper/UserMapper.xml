@@ -38,5 +38,11 @@
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+  <select id="findUserById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id}
+  </select>
 
 </mapper>
