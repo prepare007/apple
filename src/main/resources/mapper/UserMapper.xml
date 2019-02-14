@@ -24,19 +24,17 @@
   </insert>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.example.domain.User" >
-    update t_user
+    update user
     <set >
-      <if test="userName != null" >
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="phone != null" >
         phone = #{phone,jdbcType=VARCHAR},
       </if>
+
     </set>
-    where user_id = #{userId,jdbcType=INTEGER}
+    where id = #{id}
   </update>
   <select id="findUserById" resultMap="BaseResultMap" parameterType="java.lang.Long">
     select
@@ -44,5 +42,10 @@
     from user
     where id = #{id}
   </select>
-
+  <delete id="deleteUser" parameterType="java.lang.Long">
+		delete from
+			user
+		where
+			id = #{id}
+	</delete>
 </mapper>

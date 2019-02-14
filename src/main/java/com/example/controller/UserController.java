@@ -34,6 +34,15 @@ public class UserController {
     public User findOneUser(@PathVariable("id") Long id) {
         return userService.findUserById(id);
     }
+    @ResponseBody
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    public void modifyUser( User user) {
+        userService.updateUser(user);
+    }
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public void modifyUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/all/{pageNum}/{pageSize}", produces = {"application/json;charset=UTF-8"})
