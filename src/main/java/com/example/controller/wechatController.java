@@ -1,7 +1,11 @@
 package com.example.controller;
 
 import com.example.config.WechatConfig;
+import com.example.domain.AuthToken;
+import com.example.util.WechatUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.ServletException;
@@ -15,14 +19,27 @@ import java.util.Arrays;
 @Controller
 @RequestMapping(value = "/wechat")
 public class wechatController {
-    private String   TOKEN="2019218sun";
+    private String TOKEN = "2019218sun";
+    @Autowired
+    private WechatConfig wechatConfig;
     @RequestMapping(value = "/id")
-    public String config (HttpServletRequest req){
-        WechatConfig wechatConfig;
-        wechatConfig = new WechatConfig();
-        req.setAttribute("id",wechatConfig.getWechatAppId());
-        return  "index";
+    public String config(Model model) {
+
+        model.addAttribute("id", wechatConfig.getWechatAppId());
+        return "index";
     }
+
+    @RequestMapping(value = "/getAccessToken")
+    public String getAccessToken(Model model) {
+
+        String appid = wechatConfig.getWechatAppId();
+        String secret = wechatConfig.getWechatAppSecret();
+        AuthToken authToken = WechatUtil.GetAccessKey(appid, secret);
+        String assccesToken = authToken.getAccessToken();
+        model.addAttribute("assccesToken",assccesToken);
+        return "index";
+    }
+
     @RequestMapping(value = "/validateToken")
     public void validateToken(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String signature = req.getParameter("signature");
