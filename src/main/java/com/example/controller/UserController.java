@@ -24,7 +24,8 @@ public class UserController {
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping(value = "/add", produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/add", produces = {"application/json;charset=UTF-8"}, method =
+            RequestMethod.POST)
     public int addUser(User user){
         return userService.addUser(user);
     }
@@ -34,10 +35,12 @@ public class UserController {
     public User findOneUser(@PathVariable("id") Long id) {
         return userService.findUserById(id);
     }
+
+
     @ResponseBody
-    @RequestMapping(value = "/user", method = RequestMethod.PUT)
-    public void modifyUser( User user) {
-        userService.updateUser(user);
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public long modifyUser( User user) {
+        return userService.updateUser(user);
     }
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public void modifyUser(@PathVariable("id") Long id) {

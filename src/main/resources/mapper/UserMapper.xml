@@ -16,11 +16,9 @@
     from user
   </select>
 
-  <insert id="insert" parameterType="com.example.domain.User" >
-    insert into t_user (user_id, user_name, password, 
-      phone)
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{phone,jdbcType=VARCHAR})
+  <insert id="insertSelective" parameterType="com.example.domain.User" >
+    insert into user (id, name,phone)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR})
   </insert>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.example.domain.User" >

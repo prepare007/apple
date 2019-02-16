@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long updateUser(User user) {
-        return userMapper.updateUser(user);
+        return userMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override

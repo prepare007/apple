@@ -15,7 +15,7 @@ public interface UserMapper {
 
     User findUserById(Long id);
 
-    Long updateUser(User user);
+    Long updateByPrimaryKeySelective(User user);
 
     Long deleteUser(Long id);
 }
