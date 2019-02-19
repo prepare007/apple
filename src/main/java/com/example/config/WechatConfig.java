@@ -17,6 +17,17 @@ public class WechatConfig {
     @Value("${wechat_app_secret}")
     private String wechatAppSecret;
 
+    @Value("${encoding_aes_key}")
+    private String encoding_aes_key;
+
+    public String getEncoding_aes_key() {
+        return encoding_aes_key;
+    }
+
+    public void setEncoding_aes_key(String encoding_aes_key) {
+        this.encoding_aes_key = encoding_aes_key;
+    }
+
     public String getWechatAppId() {
         return wechatAppId;
     }

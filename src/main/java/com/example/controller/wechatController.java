@@ -2,19 +2,24 @@ package com.example.controller;
 
 import com.example.config.WechatConfig;
 import com.example.domain.AuthToken;
+import com.example.util.MessageUtil;
 import com.example.util.WechatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/wechat")
@@ -40,7 +45,41 @@ public class wechatController {
         return "index";
     }
 
-    @RequestMapping(value = "/validateToken")
+    /**
+     * post方法处理业务逻辑 ，validateToken 这个要和公众号的服务器配置的url一致
+     * @param req
+     * @param resp
+     * @throws UnsupportedEncodingException
+     */
+    @RequestMapping (value = "/validateToken",method = {RequestMethod.POST })
+    public  void  text(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        String result="";
+
+        try {
+            Map<String,String> map=MessageUtil.parseXml(req);
+            System.out.println("开始构造消息");
+
+            result = MessageUtil.buildResponseMessage(map);
+            System.out.println(result);
+            if(result.equals("")){
+                result = "未正确响应";
+            }
+            resp.getWriter().println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * get方法校验签名
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
+    @RequestMapping(value = "/validateToken",method = {RequestMethod.GET })
     public void validateToken(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String signature = req.getParameter("signature");
         String timestamp = req.getParameter("timestamp");
@@ -55,9 +94,20 @@ public class wechatController {
         /**
          * 校验微信服务器传递过来的签名 和  加密后的字符串是否一致, 若一致则签名通过
          */
+        PrintWriter out=null;
         if (!"".equals(signature) && !"".equals(mySignature) && signature.equals(mySignature)) {
-            System.out.println("-----签名校验通过-----");
-            resp.getWriter().write(echostr);
+            System.out.println("啦啦啦，签名校验通过-----");
+            try {
+                out = resp.getWriter();
+                out.print(echostr);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                if (out != null) {
+                    out.close();
+                    out = null;                       //释放资源
+                }
+            }
         } else {
             System.out.println("-----校验签名失败-----");
         }
